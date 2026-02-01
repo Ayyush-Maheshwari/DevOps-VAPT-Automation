@@ -1,0 +1,106 @@
+# Security Reports
+security-reports/
+*.log
+*.tmp
+
+# OS Files
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+
+# IDE
+.vscode/
+.idea/
+*.iml
+*.sublime-*
+
+# Environment Files
+.env
+.env.local
+.env.*.local
+
+# Tool Caches
+.trivy-cache/
+.semgrep-cache/
+dependency-check-data/
+
+# Build Artifacts
+dist/
+build/
+*.zip
+*.tar.gz
+*.jar
+*.war
+
+# Node
+node_modules/
+npm-debug.log
+yarn-error.log
+package-lock.json
+yarn.lock
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+ENV/
+.venv
+
+# Java
+target/
+*.class
+*.jar
+*.war
+*.ear
+
+# Go
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+vendor/
+
+# Ruby
+*.gem
+.bundle/
+vendor/bundle
+
+# Docker
+.dockerignore
+
+# Temporary Files
+*.bak
+*.backup
+temp/
+tmp/
+
+# Test Coverage
+coverage/
+*.coverage
+.nyc_output/
+
+# Secrets (just in case)
+*.pem
+*.key
+*.cert
+credentials.json
+secrets.yml
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# Logs
+logs/
+*.log
+
+# CI/CD specific
+.gitlab-ci-local/
