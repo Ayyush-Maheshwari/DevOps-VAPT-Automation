@@ -1,0 +1,217 @@
+{
+  "scan_configuration": {
+    "version": "1.0.0",
+    "last_updated": "2024-03-29",
+    "description": "Scanner tool configurations for automated security testing"
+  },
+  "dependency_check": {
+    "tool": "OWASP Dependency-Check",
+    "version": "7.4.4",
+    "database_url": "https://nvd.nist.gov/feeds/json/cve/1.1/",
+    "update_database": true,
+    "formats": ["HTML", "JSON", "XML", "CSV"],
+    "fail_on_cvss": 7.0,
+    "suppression_file": "config/dependency-suppressions.xml",
+    "analyzers": {
+      "assembly": true,
+      "jar": true,
+      "node": true,
+      "python": true,
+      "ruby": true,
+      "composer": true,
+      "nuget": true,
+      "golang": true
+    },
+    "paths_to_scan": [
+      ".",
+      "src/",
+      "lib/"
+    ],
+    "paths_to_exclude": [
+      "test/",
+      "tests/",
+      "node_modules/",
+      "vendor/",
+      ".git/"
+    ]
+  },
+  "trivy": {
+    "tool": "Aqua Trivy",
+    "version": "latest",
+    "scan_types": ["image", "fs", "config"],
+    "severity_levels": ["CRITICAL", "HIGH", "MEDIUM", "LOW"],
+    "ignore_unfixed": false,
+    "timeout": "10m",
+    "cache_directory": ".trivy-cache",
+    "database": {
+      "auto_update": true,
+      "repository": "ghcr.io/aquasecurity/trivy-db"
+    },
+    "scanners": {
+      "vuln": true,
+      "config": true,
+      "secret": true,
+      "license": false
+    },
+    "formats": ["json", "table", "sarif"]
+  },
+  "semgrep": {
+    "tool": "Semgrep",
+    "version": "latest",
+    "config": "auto",
+    "rulesets": [
+      "p/security-audit",
+      "p/owasp-top-ten",
+      "p/cwe-top-25",
+      "p/python",
+      "p/javascript",
+      "p/java",
+      "p/golang"
+    ],
+    "exclude_rules": [],
+    "exclude_paths": [
+      "test/",
+      "tests/",
+      "*.test.js",
+      "*.spec.js",
+      "__tests__/",
+      "node_modules/"
+    ],
+    "max_memory": "8000",
+    "timeout": 30,
+    "output_formats": ["json", "sarif", "text"],
+    "metrics": {
+      "enabled": false
+    }
+  },
+  "bandit": {
+    "tool": "Bandit",
+    "version": "latest",
+    "confidence_level": "LOW",
+    "severity_level": "LOW",
+    "exclude_paths": [
+      "/test",
+      "/tests",
+      "test_*.py"
+    ],
+    "tests": [
+      "B101",
+      "B102",
+      "B103",
+      "B104",
+      "B105",
+      "B106",
+      "B107",
+      "B108",
+      "B110",
+      "B112",
+      "B201",
+      "B301",
+      "B302",
+      "B303",
+      "B304",
+      "B305",
+      "B306",
+      "B307",
+      "B308",
+      "B310",
+      "B311",
+      "B312",
+      "B313",
+      "B314",
+      "B315",
+      "B316",
+      "B317",
+      "B318",
+      "B319",
+      "B320",
+      "B321",
+      "B323",
+      "B324",
+      "B325",
+      "B401",
+      "B402",
+      "B403",
+      "B404",
+      "B405",
+      "B406",
+      "B407",
+      "B408",
+      "B409",
+      "B410",
+      "B411",
+      "B412",
+      "B413",
+      "B501",
+      "B502",
+      "B503",
+      "B504",
+      "B505",
+      "B506",
+      "B507",
+      "B601",
+      "B602",
+      "B603",
+      "B604",
+      "B605",
+      "B606",
+      "B607",
+      "B608",
+      "B609",
+      "B610",
+      "B611",
+      "B701",
+      "B702",
+      "B703"
+    ],
+    "output_format": ["json", "txt", "html"]
+  },
+  "gitleaks": {
+    "tool": "GitLeaks",
+    "version": "8.18.0",
+    "config_file": ".gitleaks.toml",
+    "verbose": true,
+    "redact": false,
+    "no_git": false,
+    "repo_config": false,
+    "report_format": "json",
+    "log_level": "info",
+    "baseline_path": "",
+    "max_target_megabytes": 100
+  },
+  "custom_scanners": {
+    "regex_patterns": {
+      "aws_access_key": "AKIA[0-9A-Z]{16}",
+      "github_token": "ghp_[a-zA-Z0-9]{36}",
+      "slack_token": "xox[baprs]-[0-9a-zA-Z-]+",
+      "private_key": "-----BEGIN (RSA|DSA|EC|OPENSSH) PRIVATE KEY-----",
+      "jwt_token": "eyJ[a-zA-Z0-9_-]+\\.eyJ[a-zA-Z0-9_-]+\\.[a-zA-Z0-9_-]+",
+      "api_key": "(api[_-]?key|apikey|api[_-]?secret)['\\\"]\\s*[:=]\\s*['\\\"][a-zA-Z0-9]{20,}",
+      "password": "(password|passwd|pwd)['\\\"]\\s*[:=]\\s*['\\\"][^'\\\"]{3,}",
+      "connection_string": "(mongodb|mysql|postgresql|jdbc)://[^'\\\"\\s]+"
+    },
+    "file_extensions": {
+      "scan": [".js", ".py", ".java", ".go", ".rb", ".php", ".ts", ".jsx", ".tsx"],
+      "ignore": [".min.js", ".bundle.js", ".map"]
+    }
+  },
+  "reporting": {
+    "output_directory": "./security-reports",
+    "consolidated_report": true,
+    "formats": ["html", "json", "txt", "pdf"],
+    "include_remediation": true,
+    "include_cvss_scores": true,
+    "include_cve_details": true,
+    "historical_comparison": true,
+    "trend_analysis": true
+  },
+  "performance": {
+    "parallel_scans": true,
+    "max_concurrent_scans": 4,
+    "scan_timeout_minutes": 60,
+    "retry_on_failure": true,
+    "max_retries": 3,
+    "cache_enabled": true,
+    "cache_ttl_hours": 24
+  }
+}
